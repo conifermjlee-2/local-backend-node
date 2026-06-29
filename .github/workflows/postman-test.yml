@@ -24,4 +24,4 @@ jobs:
 
       # 4. Postman 컬렉션 실행하기
       - name: Run API Tests
-        run: postman collection run 37510793-67e58364-b311-41c6-94da-bada05c5e8d5
+        run: postman collection run 37510793-5982543a-f5fd-4ba5-9e19-6340246f97d2
