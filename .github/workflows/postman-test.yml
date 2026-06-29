@@ -13,15 +13,31 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. 서버에 Postman CLI 설치하기
+      # 2. Node.js 설치하기 (백엔드를 켜기 위해)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+          
+      # 3. 필수 라이브러리 다운로드
+      - name: Install dependencies
+        run: npm install
+
+      # 4. 백엔드 서버를 백그라운드(&)에서 켜두기!
+      - name: Start backend server
+        run: |
+          npm start &
+          sleep 3 # 서버가 완전히 켜질 때까지 3초 기다림
+
+      # 5. 서버에 Postman CLI 설치하기
       - name: Install Postman CLI
         run: |
           curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
 
-      # 3. 내 API 키로 로그인하기 (GitHub Secrets 사용)
+      # 6. 내 API 키로 로그인하기 (GitHub Secrets 사용)
       - name: Login to Postman
         run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
 
-      # 4. Postman 컬렉션 실행하기
+      # 7. Postman 컬렉션 실행하기
       - name: Run API Tests
         run: postman collection run 37510793-5982543a-f5fd-4ba5-9e19-6340246f97d2
