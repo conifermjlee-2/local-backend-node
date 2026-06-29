@@ -1,0 +1,27 @@
+name: Postman API Automated Test
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  test-api:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 내 코드 가져오기
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. 서버에 Postman CLI 설치하기
+      - name: Install Postman CLI
+        run: |
+          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+
+      # 3. 내 API 키로 로그인하기 (GitHub Secrets 사용)
+      - name: Login to Postman
+        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+
+      # 4. Postman 컬렉션 실행하기
+      - name: Run API Tests
+        run: postman collection run 37510793-67e58364-b311-41c6-94da-bada05c5e8d5
